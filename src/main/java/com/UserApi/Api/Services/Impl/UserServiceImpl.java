@@ -1,16 +1,16 @@
 package com.UserApi.Api.Services.Impl;
 
+import com.UserApi.Api.Dtos.UpdateUserDTO;
 import com.UserApi.Api.Dtos.UserDTO;
 import com.UserApi.Api.Entities.User;
 import com.UserApi.Api.Exceptions.UserException;
 import com.UserApi.Api.Repositories.UserRepository;
 import com.UserApi.Api.Services.UserService;
+import com.UserApi.Api.Utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -18,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private DateUtils dateUtils;
 
     @Override
     public User saveUser(UserDTO user) {
@@ -32,9 +34,9 @@ public class UserServiceImpl implements UserService {
 
         User userToSave = new User();
 
-        userToSave.setName(user.getNome());
+        userToSave.setName(user.getName());
         userToSave.setCpf(user.getCpf());
-        userToSave.setBirthDate(dateConverter(user.getDataNascimento()));
+        userToSave.setBirthDate(dateUtils.dateConverter(user.getBirthDate()));
         userToSave.setEmail(user.getEmail());
 
         return repository.save(userToSave);
@@ -45,14 +47,31 @@ public class UserServiceImpl implements UserService {
         return repository.findAll();
     }
 
-    private LocalDate dateConverter(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate formatedDate = LocalDate.parse(date, formatter);
-        return formatedDate;
-    }
-
     public User getUserById(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new UserException("Usuário com este Id Não Existe", HttpStatus.NOT_FOUND));
+    }
+
+    public void deleteUserById(Integer id) {
+        repository.deleteById(id);
+    }
+
+    public Integer updateUser(Integer id, UpdateUserDTO updateUserDTO) {
+
+        User user = repository.findById(id)
+                .orElseThrow(() -> new UserException("Usuário com este Id Não Existe", HttpStatus.NOT_FOUND));
+
+        if(updateUserDTO.getEmail() == null) {
+            throw new UserException("É necessário passar um email válido", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        if(updateUserDTO.getName() == null) {
+            throw new UserException("É necessário passar um nome válido", HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        user.setEmail(updateUserDTO.getEmail());
+        user.setName(updateUserDTO.getName());
+
+        return repository.save(user).getId();
     }
 }

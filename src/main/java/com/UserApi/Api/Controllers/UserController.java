@@ -1,9 +1,9 @@
 package com.UserApi.Api.Controllers;
 
+import com.UserApi.Api.Dtos.UpdateUserDTO;
 import com.UserApi.Api.Dtos.UserDTO;
 import com.UserApi.Api.Entities.User;
 import com.UserApi.Api.Services.Impl.UserServiceImpl;
-import com.UserApi.Api.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class UserController {
     private UserServiceImpl service;
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody UserDTO userDTO) {
         return service.saveUser(userDTO);
     }
@@ -33,5 +33,17 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public User getUserById(@PathVariable Integer id) {
         return service.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUserById(@PathVariable Integer id){
+        service.deleteUserById(id);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Integer updateUser(@PathVariable Integer id, @RequestBody UpdateUserDTO updateUserDTO) {
+        return service.updateUser(id, updateUserDTO);
     }
 }

@@ -1,7 +1,7 @@
 # Teste Técnico: Desenvolvimento de uma API REST de Usuários
 
 ## Objetivo
-Desenvolver uma API RESTful em Java utilizando Spring Boot para gerenciar uma entidade de Usuários, implementando as quatro operações principais de um CRUD (Create, Read, Update, Delete). Além disso, a API deve realizar validação de dados para garantir que os campos email e CPF sejam únicos no banco de dados. Por fim, é necessário implementar um tratamento de exceções personalizado.
+Desenvolver uma API REST em Java utilizando Spring Boot para gerenciar uma entidade de Usuários, implementando as quatro operações principais de um CRUD (Create, Read, Update, Delete). Além disso, a API deve realizar validação de dados para garantir que os campos email e CPF sejam únicos no banco de dados. Por fim, é necessário implementar um tratamento de exceções personalizado.
 
 ## Requisitos Funcionais
 ### Operações CRUD:

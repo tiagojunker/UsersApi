@@ -8,11 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @Builder
-public class UserDTO {
+public class UpdateUserDTO {
 
     private String name;
-    private String cpf;
     private String email;
-    private String birthDate;
 
 }
